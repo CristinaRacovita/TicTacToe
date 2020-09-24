@@ -5,4 +5,7 @@
     <string name="player1">Player1:</string>
     <string name="player2">Player2:</string>
     <string name="startScore">0</string>
+    <string name="start1">Play with another player</string>
+    <string name="start2">Play with computer</string>
+    <string name="settings">Settings</string>
 </resources>

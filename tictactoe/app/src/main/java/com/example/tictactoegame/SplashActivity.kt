@@ -13,7 +13,7 @@ class SplashActivity : AppCompatActivity() {
 
         val splashTimeMilliseconds: Long = 2000
         Handler().postDelayed({
-            val startIntent = Intent(this@SplashActivity, MainActivity::class.java)
+            val startIntent = Intent(this@SplashActivity, StartActivity::class.java)
             startActivity(startIntent)
             finish()
         }, splashTimeMilliseconds)

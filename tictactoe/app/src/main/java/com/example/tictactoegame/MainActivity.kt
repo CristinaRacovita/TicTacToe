@@ -133,6 +133,11 @@ class MainActivity : AppCompatActivity() {
 
             newGame()
 
+        } else {
+            if ((player1.size == 4 && player2.size == 5) || (player1.size == 5 && player2.size == 4)) {
+                Toast.makeText(this, "It's a tie", Toast.LENGTH_LONG).show()
+                newGame()
+            }
         }
     }
 
@@ -147,39 +152,39 @@ class MainActivity : AppCompatActivity() {
         val button8: Button = findViewById(R.id.button8)
         val button9: Button = findViewById(R.id.button9)
 
-        button1.setBackgroundColor(getColor(R.color.blueLight))
+        button1.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button1.text = ""
         button1.isEnabled = true
 
-        button2.setBackgroundColor(getColor(R.color.blueLight))
+        button2.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button2.text = ""
         button2.isEnabled = true
 
-        button3.setBackgroundColor(getColor(R.color.blueLight))
+        button3.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button3.text = ""
         button3.isEnabled = true
 
-        button4.setBackgroundColor(getColor(R.color.blueLight))
+        button4.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button4.text = ""
         button4.isEnabled = true
 
-        button5.setBackgroundColor(getColor(R.color.blueLight))
+        button5.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button5.text = ""
         button5.isEnabled = true
 
-        button6.setBackgroundColor(getColor(R.color.blueLight))
+        button6.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button6.text = ""
         button6.isEnabled = true
 
-        button7.setBackgroundColor(getColor(R.color.blueLight))
+        button7.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button7.text = ""
         button7.isEnabled = true
 
-        button8.setBackgroundColor(getColor(R.color.blueLight))
+        button8.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button8.text = ""
         button8.isEnabled = true
 
-        button9.setBackgroundColor(getColor(R.color.blueLight))
+        button9.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button9.text = ""
         button9.isEnabled = true
 
