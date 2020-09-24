@@ -2,4 +2,7 @@
     <string name="app_name">TicTacToe</string>
     <string name="tictac">TicTac</string>
     <string name="toe">Toe</string>
+    <string name="player1">Player1:</string>
+    <string name="player2">Player2:</string>
+    <string name="startScore">0</string>
 </resources>

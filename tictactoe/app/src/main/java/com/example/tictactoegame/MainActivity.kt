@@ -3,6 +3,7 @@ package com.example.tictactoegame
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -118,8 +119,16 @@ class MainActivity : AppCompatActivity() {
 
             if (winner == 1) {
                 Toast.makeText(this, " Player 1  win the game", Toast.LENGTH_LONG).show()
+                val scorePlayer1TextView: TextView = findViewById(R.id.player1Score)
+                var scorePlayer1 = scorePlayer1TextView.text.toString().toInt()
+                scorePlayer1 += 1
+                scorePlayer1TextView.text = "$scorePlayer1"
             } else {
                 Toast.makeText(this, " Player 2  win the game", Toast.LENGTH_LONG).show()
+                val scorePlayer2TextView: TextView = findViewById(R.id.player2Score)
+                var scorePlayer2 = scorePlayer2TextView.text.toString().toInt()
+                scorePlayer2 += 1
+                scorePlayer2TextView.text = "$scorePlayer2"
             }
 
             newGame()
@@ -140,30 +149,43 @@ class MainActivity : AppCompatActivity() {
 
         button1.setBackgroundColor(getColor(R.color.blueLight))
         button1.text = ""
+        button1.isEnabled = true
 
         button2.setBackgroundColor(getColor(R.color.blueLight))
         button2.text = ""
+        button2.isEnabled = true
 
         button3.setBackgroundColor(getColor(R.color.blueLight))
         button3.text = ""
+        button3.isEnabled = true
 
         button4.setBackgroundColor(getColor(R.color.blueLight))
         button4.text = ""
+        button4.isEnabled = true
 
         button5.setBackgroundColor(getColor(R.color.blueLight))
         button5.text = ""
+        button5.isEnabled = true
 
         button6.setBackgroundColor(getColor(R.color.blueLight))
         button6.text = ""
+        button6.isEnabled = true
 
         button7.setBackgroundColor(getColor(R.color.blueLight))
         button7.text = ""
+        button7.isEnabled = true
 
         button8.setBackgroundColor(getColor(R.color.blueLight))
         button8.text = ""
+        button8.isEnabled = true
 
         button9.setBackgroundColor(getColor(R.color.blueLight))
         button9.text = ""
+        button9.isEnabled = true
+
+        player1.clear()
+        player2.clear()
+        activePlayer = 1
 
     }
 }
