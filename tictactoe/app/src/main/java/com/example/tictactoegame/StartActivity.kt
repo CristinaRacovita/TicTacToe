@@ -7,11 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class StartActivity : AppCompatActivity() {
     companion object {
-
         fun getValue(): String {
-
             return "GAME MODE"
-
         }
     }
 

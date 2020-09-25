@@ -28,11 +28,19 @@ class MainActivity : AppCompatActivity() {
         R.id.button9 to 9
     )
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         playWithComputer = intent.getBooleanExtra(StartActivity.getValue(), false)
+        if(playWithComputer){
+            val player2Text : TextView = findViewById(R.id.player2)
+            player2Text.text = getString(R.string.computer)
+        }
     }
 
     fun pressButton(view: View) {
@@ -57,11 +65,10 @@ class MainActivity : AppCompatActivity() {
             player2.add(randomEntry.value)
 
             allButtonsAvailable.remove(randomEntry.key)
-            
+
             view.isEnabled = false
             newButtonSelected.isEnabled = false
 
-            playWithComputer = true
         }
 
         checkWinner()
@@ -92,9 +99,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         view.isEnabled = false
-
-        playWithComputer = false
-
         checkWinner()
     }
 
@@ -247,4 +251,5 @@ class MainActivity : AppCompatActivity() {
         activePlayer = 1
 
     }
+
 }
