@@ -1,6 +1,7 @@
-package com.example.tictactoegame
+package com.example.tictactoegame.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.example.tictactoegame.R
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var button7: Button? = null
     private var button8: Button? = null
     private var button9: Button? = null
-
+    private var length = 0
 
     private var allButtonsAvailable = mutableMapOf(
         R.id.button1 to 1,
@@ -43,6 +45,8 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onBackPressed() {
+        val intent = Intent(this, StartActivity::class.java)
+        startActivity(intent)
         finish()
     }
 
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         button9 = findViewById(R.id.button9)
 
         val prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-        val isDarkMode = prefs.getBoolean(SettingsActivity.getSwitchValue(), false)
+        val isDarkMode = prefs.getBoolean(SettingsActivity.getDarkModeSwitchValue(), false)
         val mainLayout = findViewById<ConstraintLayout>(R.id.mainLayout)
         val title = findViewById<TextView>(R.id.title1)
         val player1 = findViewById<TextView>(R.id.player1)
@@ -71,7 +75,10 @@ class MainActivity : AppCompatActivity() {
         val table = findViewById<TableLayout>(R.id.table)
 
         if (isDarkMode) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDarkDarkMode)
+            window.statusBarColor = ContextCompat.getColor(
+                this,
+                R.color.colorPrimaryDarkDarkMode
+            )
 
             table.setBackgroundResource(R.color.colorPrimaryDarkDarkMode)
             mainLayout.setBackgroundResource(R.color.colorPrimaryDarkDarkMode)
@@ -92,7 +99,10 @@ class MainActivity : AppCompatActivity() {
             button9?.setBackgroundResource(R.color.white)
 
         } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+            window.statusBarColor = ContextCompat.getColor(
+                this,
+                R.color.colorPrimaryDark
+            )
 
             table.setBackgroundResource(R.color.white)
             mainLayout.setBackgroundResource(R.color.white)
@@ -319,5 +329,21 @@ class MainActivity : AppCompatActivity() {
         activePlayer = 1
 
     }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+
+        val mediaPlayer = StartActivity.getMediaPlayer()
+
+        if (!hasFocus) {
+            mediaPlayer.pause()
+            length = mediaPlayer.currentPosition
+        } else {
+            mediaPlayer.seekTo(length)
+            mediaPlayer.start()
+        }
+
+    }
+
 
 }

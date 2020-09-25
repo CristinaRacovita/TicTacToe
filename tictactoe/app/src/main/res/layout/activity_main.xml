@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <TableLayout
         android:id="@+id/table"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title1"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
         <TableRow
             android:layout_width="match_parent"
