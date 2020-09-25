@@ -6,52 +6,94 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private var player1 = ArrayList<Int>()
     private var player2 = ArrayList<Int>()
     private var activePlayer = 1
+    private var playWithComputer = false
+
+    private var allButtonsAvailable = mutableMapOf(
+        R.id.button1 to 1,
+        R.id.button2 to 2,
+        R.id.button3 to 3,
+        R.id.button4 to 4,
+        R.id.button5 to 5,
+        R.id.button6 to 6,
+        R.id.button7 to 7,
+        R.id.button8 to 8,
+        R.id.button9 to 9
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        playWithComputer = intent.getBooleanExtra(StartActivity.getValue(), false)
     }
 
     fun pressButton(view: View) {
-        var cellID = 0
-        when (view.id) {
-            R.id.button1 -> cellID = 1
-            R.id.button2 -> cellID = 2
-            R.id.button3 -> cellID = 3
-            R.id.button4 -> cellID = 4
-            R.id.button5 -> cellID = 5
-            R.id.button6 -> cellID = 6
-            R.id.button7 -> cellID = 7
-            R.id.button8 -> cellID = 8
-            R.id.button9 -> cellID = 9
+        playGame(view as Button)
+    }
+
+    private fun playComputer(view: Button) {
+        allButtonsAvailable[view.id]?.let { player1.add(it) }
+        allButtonsAvailable.remove(view.id)
+        view.text = "X"
+        view.setBackgroundColor(getColor(R.color.colorAccent))
+
+        if (allButtonsAvailable.isNotEmpty()) {
+
+            val random = Random()
+            val randomEntry =
+                allButtonsAvailable.entries.elementAt(random.nextInt(allButtonsAvailable.size))
+            val newButtonSelected: Button = findViewById(randomEntry.key)
+
+            newButtonSelected.text = "0"
+            newButtonSelected.setBackgroundColor(getColor(R.color.colorPrimary))
+            player2.add(randomEntry.value)
+
+            allButtonsAvailable.remove(randomEntry.key)
+            
+            view.isEnabled = false
+            newButtonSelected.isEnabled = false
+
+            playWithComputer = true
         }
 
-        playGame(cellID, view as Button)
+        checkWinner()
 
     }
 
-    private fun playGame(cellId: Int, view: Button) {
+    private fun playGame(view: Button) {
+        if (playWithComputer) {
+            playComputer(view)
+        } else {
+            playPlayer(view)
+        }
+    }
+
+    private fun playPlayer(view: Button) {
         if (activePlayer == 1) {
             view.text = "X"
             view.setBackgroundColor(getColor(R.color.colorAccent))
 
-            player1.add(cellId)
+            allButtonsAvailable[view.id]?.let { player1.add(it) }
             activePlayer = 2
         } else {
             view.text = "0"
             view.setBackgroundColor(getColor(R.color.colorPrimary))
 
-            player2.add(cellId)
+            allButtonsAvailable[view.id]?.let { player2.add(it) }
             activePlayer = 1
         }
 
         view.isEnabled = false
+
+        playWithComputer = false
 
         checkWinner()
     }
@@ -187,6 +229,18 @@ class MainActivity : AppCompatActivity() {
         button9.setBackgroundColor(getColor(R.color.colorPrimaryLight))
         button9.text = ""
         button9.isEnabled = true
+
+        allButtonsAvailable = mutableMapOf(
+            R.id.button1 to 1,
+            R.id.button2 to 2,
+            R.id.button3 to 3,
+            R.id.button4 to 4,
+            R.id.button5 to 5,
+            R.id.button6 to 6,
+            R.id.button7 to 7,
+            R.id.button8 to 8,
+            R.id.button9 to 9
+        )
 
         player1.clear()
         player2.clear()
