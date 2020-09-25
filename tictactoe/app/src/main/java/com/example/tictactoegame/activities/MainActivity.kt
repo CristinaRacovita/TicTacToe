@@ -1,9 +1,12 @@
 package com.example.tictactoegame.activities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.TableLayout
@@ -15,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.example.tictactoegame.R
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var length = 0
     private lateinit var prefs: SharedPreferences
     private var isMusicOn = false
+    private var case = 0
+    private var isOk = true
 
     private var allButtonsAvailable = mutableMapOf(
         R.id.button1 to 1,
@@ -59,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
         isMusicOn = prefs.getBoolean(SettingsActivity.getMusicSwitchValue(), true)
+        case = prefs.getInt(SettingsActivity.getGameMode(), 1)
 
         button1 = findViewById(R.id.button1)
         button2 = findViewById(R.id.button2)
@@ -134,10 +141,97 @@ class MainActivity : AppCompatActivity() {
             val player2Text: TextView = findViewById(R.id.player2)
             player2Text.text = getString(R.string.computer)
         }
+
+        val scorePlayer2TextView: TextView = findViewById(R.id.player2Score)
+        val scorePlayer1TextView: TextView = findViewById(R.id.player1Score)
+
+        scorePlayer1TextView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                if (!checkNextGame()) {
+                    val score1 = scorePlayer1TextView.text.toString().toInt()
+                    val score2 = scorePlayer2TextView.text.toString().toInt()
+
+                    var message = ""
+                    if (score1 > score2) {
+                        message = "Player1 WIIIIIIN"
+                    } else {
+                        message = "Player2 WIIIIIIN"
+                    }
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("Congrats!")
+                        .setMessage(message)
+                        .setPositiveButton(
+                            R.string.playAgain
+                        ) { dialog, which ->
+                            isOk = true
+                            newGame()
+                            scorePlayer1TextView.text = getString(R.string.startScore)
+                            scorePlayer2TextView.text = getString(R.string.startScore)
+                        }
+                        .setNegativeButton(R.string.goMainPage) { dialog, which ->
+                            val intent = Intent(applicationContext, StartActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .show()
+                    isOk = false
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+        scorePlayer2TextView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                if (!checkNextGame()) {
+                    isOk = false
+                    val score1 = scorePlayer1TextView.text.toString().toInt()
+                    val score2 = scorePlayer2TextView.text.toString().toInt()
+
+                    var message = ""
+                    if (score1 > score2) {
+                        message = "Player1 WIIIIIIN"
+                    } else {
+                        message = "Player2 WIIIIIIN"
+                    }
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("Congrats!")
+                        .setMessage(message)
+                        .setPositiveButton(
+                            R.string.playAgain
+                        ) { dialog, which ->
+                            isOk = true
+                            newGame()
+                            scorePlayer1TextView.text = getString(R.string.startScore)
+                            scorePlayer2TextView.text = getString(R.string.startScore)
+                        }
+                        .setNegativeButton(R.string.goMainPage) { dialog, which ->
+                            val intent = Intent(applicationContext, StartActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .show()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+
     }
 
     fun pressButton(view: View) {
-        playGame(view as Button)
+        if (isOk) {
+            playGame(view as Button)
+        }
     }
 
     private fun playComputer(view: Button) {
@@ -193,6 +287,28 @@ class MainActivity : AppCompatActivity() {
 
         view.isEnabled = false
         checkWinner()
+    }
+
+    private fun checkNextGame(): Boolean {
+        val scorePlayer2TextView: TextView = findViewById(R.id.player2Score)
+        val scorePlayer1TextView: TextView = findViewById(R.id.player1Score)
+
+        val sum =
+            scorePlayer1TextView.text.toString().toInt() + scorePlayer2TextView.text.toString()
+                .toInt()
+
+        when (case) {
+            1 -> if (sum == 3) {
+                return false
+            }
+            2 -> if (sum == 9) {
+                return false
+            }
+            3 -> if (sum == 15) {
+                return false
+            }
+        }
+        return true
     }
 
     private fun checkWinner() {
@@ -255,7 +371,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (winner != -1) {
-
             if (winner == 1) {
                 Toast.makeText(this, " Player 1  win the game", Toast.LENGTH_LONG).show()
                 val scorePlayer1TextView: TextView = findViewById(R.id.player1Score)

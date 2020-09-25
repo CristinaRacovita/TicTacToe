@@ -15,4 +15,6 @@
     <string name="secondCase">4 of 5</string>
     <string name="thirdCase">7 of 8</string>
     <string name="gameMode">Game Mode:</string>
+    <string name="playAgain">Play Again!</string>
+    <string name="goMainPage">Go to Start Page!</string>
 </resources>

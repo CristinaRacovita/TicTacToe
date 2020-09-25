@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -24,11 +25,16 @@ class SettingsActivity : AppCompatActivity() {
         fun getMusicSwitchValue(): String {
             return "MUSIC_MODE"
         }
+
+        fun getGameMode(): String {
+            return "GAME_MODE"
+        }
     }
 
     private lateinit var prefs: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var toolbar: Toolbar
+    private val radioMap = mapOf(1 to R.id.firstCase, 2 to R.id.secondCase, 3 to R.id.thirdCase)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,16 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        editor = prefs.edit()
+
+        val radioGroup: RadioGroup = findViewById(R.id.radioGroup)
+
+        radioMap[prefs.getInt(getGameMode(), 1)]?.let { radioGroup.check(it) }
+
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            editor.putInt(getGameMode(), radioGroup.indexOfChild(findViewById(checkedId))+1)
+            editor.apply()
+        }
 
         checkDarkMode()
         checkMusic()
