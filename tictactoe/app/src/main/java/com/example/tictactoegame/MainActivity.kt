@@ -1,11 +1,15 @@
 package com.example.tictactoegame
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TableLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -15,6 +19,16 @@ class MainActivity : AppCompatActivity() {
     private var player2 = ArrayList<Int>()
     private var activePlayer = 1
     private var playWithComputer = false
+    private var button1: Button? = null
+    private var button2: Button? = null
+    private var button3: Button? = null
+    private var button4: Button? = null
+    private var button5: Button? = null
+    private var button6: Button? = null
+    private var button7: Button? = null
+    private var button8: Button? = null
+    private var button9: Button? = null
+
 
     private var allButtonsAvailable = mutableMapOf(
         R.id.button1 to 1,
@@ -36,9 +50,72 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        button1 = findViewById(R.id.button1)
+        button2 = findViewById(R.id.button2)
+        button3 = findViewById(R.id.button3)
+        button4 = findViewById(R.id.button4)
+        button5 = findViewById(R.id.button5)
+        button6 = findViewById(R.id.button6)
+        button7 = findViewById(R.id.button7)
+        button8 = findViewById(R.id.button8)
+        button9 = findViewById(R.id.button9)
+
+        val prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        val isDarkMode = prefs.getBoolean(SettingsActivity.getSwitchValue(), false)
+        val mainLayout = findViewById<ConstraintLayout>(R.id.mainLayout)
+        val title = findViewById<TextView>(R.id.title1)
+        val player1 = findViewById<TextView>(R.id.player1)
+        val player2 = findViewById<TextView>(R.id.player2)
+        val scorePlayer1 = findViewById<TextView>(R.id.player1Score)
+        val scorePlayer2 = findViewById<TextView>(R.id.player2Score)
+        val table = findViewById<TableLayout>(R.id.table)
+
+        if (isDarkMode) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDarkDarkMode)
+
+            table.setBackgroundResource(R.color.colorPrimaryDarkDarkMode)
+            mainLayout.setBackgroundResource(R.color.colorPrimaryDarkDarkMode)
+            title.setTextColor(getColor(R.color.white))
+            player1.setTextColor(getColor(R.color.white))
+            player2.setTextColor(getColor(R.color.white))
+            scorePlayer1.setTextColor(getColor(R.color.white))
+            scorePlayer2.setTextColor(getColor(R.color.white))
+
+            button1?.setBackgroundResource(R.color.white)
+            button2?.setBackgroundResource(R.color.white)
+            button3?.setBackgroundResource(R.color.white)
+            button4?.setBackgroundResource(R.color.white)
+            button5?.setBackgroundResource(R.color.white)
+            button6?.setBackgroundResource(R.color.white)
+            button7?.setBackgroundResource(R.color.white)
+            button8?.setBackgroundResource(R.color.white)
+            button9?.setBackgroundResource(R.color.white)
+
+        } else {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+
+            table.setBackgroundResource(R.color.white)
+            mainLayout.setBackgroundResource(R.color.white)
+            title.setTextColor(getColor(R.color.colorPrimaryDark))
+            player1.setTextColor(getColor(R.color.colorPrimaryDark))
+            player2.setTextColor(getColor(R.color.colorPrimaryDark))
+            scorePlayer1.setTextColor(getColor(R.color.colorPrimaryDark))
+            scorePlayer2.setTextColor(getColor(R.color.colorPrimaryDark))
+
+            button1?.setBackgroundResource(R.color.colorPrimaryLight)
+            button2?.setBackgroundResource(R.color.colorPrimaryLight)
+            button3?.setBackgroundResource(R.color.colorPrimaryLight)
+            button4?.setBackgroundResource(R.color.colorPrimaryLight)
+            button5?.setBackgroundResource(R.color.colorPrimaryLight)
+            button6?.setBackgroundResource(R.color.colorPrimaryLight)
+            button7?.setBackgroundResource(R.color.colorPrimaryLight)
+            button8?.setBackgroundResource(R.color.colorPrimaryLight)
+            button9?.setBackgroundResource(R.color.colorPrimaryLight)
+        }
+
         playWithComputer = intent.getBooleanExtra(StartActivity.getValue(), false)
-        if(playWithComputer){
-            val player2Text : TextView = findViewById(R.id.player2)
+        if (playWithComputer) {
+            val player2Text: TextView = findViewById(R.id.player2)
             player2Text.text = getString(R.string.computer)
         }
     }
@@ -188,51 +265,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun newGame() {
-        val button1: Button = findViewById(R.id.button1)
-        val button2: Button = findViewById(R.id.button2)
-        val button3: Button = findViewById(R.id.button3)
-        val button4: Button = findViewById(R.id.button4)
-        val button5: Button = findViewById(R.id.button5)
-        val button6: Button = findViewById(R.id.button6)
-        val button7: Button = findViewById(R.id.button7)
-        val button8: Button = findViewById(R.id.button8)
-        val button9: Button = findViewById(R.id.button9)
 
-        button1.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button1.text = ""
-        button1.isEnabled = true
+        button1?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button1?.text = ""
+        button1?.isEnabled = true
 
-        button2.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button2.text = ""
-        button2.isEnabled = true
+        button2?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button2?.text = ""
+        button2?.isEnabled = true
 
-        button3.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button3.text = ""
-        button3.isEnabled = true
+        button3?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button3?.text = ""
+        button3?.isEnabled = true
 
-        button4.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button4.text = ""
-        button4.isEnabled = true
+        button4?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button4?.text = ""
+        button4?.isEnabled = true
 
-        button5.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button5.text = ""
-        button5.isEnabled = true
+        button5?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button5?.text = ""
+        button5?.isEnabled = true
 
-        button6.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button6.text = ""
-        button6.isEnabled = true
+        button6?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button6?.text = ""
+        button6?.isEnabled = true
 
-        button7.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button7.text = ""
-        button7.isEnabled = true
+        button7?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button7?.text = ""
+        button7?.isEnabled = true
 
-        button8.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button8.text = ""
-        button8.isEnabled = true
+        button8?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button8?.text = ""
+        button8?.isEnabled = true
 
-        button9.setBackgroundColor(getColor(R.color.colorPrimaryLight))
-        button9.text = ""
-        button9.isEnabled = true
+        button9?.setBackgroundColor(getColor(R.color.colorPrimaryLight))
+        button9?.text = ""
+        button9?.isEnabled = true
 
         allButtonsAvailable = mutableMapOf(
             R.id.button1 to 1,

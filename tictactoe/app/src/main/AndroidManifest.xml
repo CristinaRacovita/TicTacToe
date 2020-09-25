@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/DarkTheme" />
+        <activity
             android:name=".StartActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/DarkTheme" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme" />
