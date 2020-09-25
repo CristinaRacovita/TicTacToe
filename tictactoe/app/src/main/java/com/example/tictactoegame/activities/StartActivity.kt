@@ -2,6 +2,7 @@ package com.example.tictactoegame.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
@@ -26,11 +27,16 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    var length = 0
+    private var length = 0
+    private lateinit var prefs: SharedPreferences
+    private var isMusicOn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        isMusicOn = prefs.getBoolean(SettingsActivity.getMusicSwitchValue(), true)
 
         mediaPlayer = MediaPlayer.create(this, R.raw.gamesong)
         mediaPlayer.isLooping = true
@@ -79,7 +85,6 @@ class StartActivity : AppCompatActivity() {
             )
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        mediaPlayer.start()
     }
 
     fun player(view: View) {
@@ -103,12 +108,16 @@ class StartActivity : AppCompatActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (!hasFocus) {
-            mediaPlayer.pause()
-            length = mediaPlayer.currentPosition
-        } else {
-            mediaPlayer.seekTo(length)
-            mediaPlayer.start()
+        if (isMusicOn) {
+            if (!hasFocus) {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.pause()
+                    length = mediaPlayer.currentPosition
+                }
+            } else {
+                mediaPlayer.seekTo(length)
+                mediaPlayer.start()
+            }
         }
 
     }

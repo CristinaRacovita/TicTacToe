@@ -2,6 +2,7 @@ package com.example.tictactoegame.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private var button8: Button? = null
     private var button9: Button? = null
     private var length = 0
+    private lateinit var prefs: SharedPreferences
+    private var isMusicOn = false
 
     private var allButtonsAvailable = mutableMapOf(
         R.id.button1 to 1,
@@ -53,6 +56,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        isMusicOn = prefs.getBoolean(SettingsActivity.getMusicSwitchValue(), true)
 
         button1 = findViewById(R.id.button1)
         button2 = findViewById(R.id.button2)
@@ -335,12 +341,16 @@ class MainActivity : AppCompatActivity() {
 
         val mediaPlayer = StartActivity.getMediaPlayer()
 
-        if (!hasFocus) {
-            mediaPlayer.pause()
-            length = mediaPlayer.currentPosition
-        } else {
-            mediaPlayer.seekTo(length)
-            mediaPlayer.start()
+        if (isMusicOn) {
+            if (!hasFocus) {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.pause()
+                    length = mediaPlayer.currentPosition
+                }
+            } else {
+                mediaPlayer.seekTo(length)
+                mediaPlayer.start()
+            }
         }
 
     }

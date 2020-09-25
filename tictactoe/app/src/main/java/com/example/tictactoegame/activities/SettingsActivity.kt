@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
@@ -16,6 +19,10 @@ class SettingsActivity : AppCompatActivity() {
     companion object {
         fun getDarkModeSwitchValue(): String {
             return "BUTTON_SELECTED"
+        }
+
+        fun getMusicSwitchValue(): String {
+            return "MUSIC_MODE"
         }
     }
 
@@ -32,7 +39,6 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-        editor = prefs.edit()
 
         checkDarkMode()
         checkMusic()
@@ -46,17 +52,47 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun checkDarkMode() {
+        editor = prefs.edit()
+
         val switchDarkMode: SwitchCompat = findViewById(R.id.switchDarkMode)
+        val switchMusicMode: SwitchCompat = findViewById(R.id.switchMusic)
+        val gameMode: TextView = findViewById(R.id.gameMode)
+        val radioGroup: RadioGroup = findViewById(R.id.radioGroup)
+        val firstCase: RadioButton = findViewById(R.id.firstCase)
+        val secondCase: RadioButton = findViewById(R.id.secondCase)
+        val thirdCase: RadioButton = findViewById(R.id.thirdCase)
 
         switchDarkMode.isChecked = prefs.getBoolean(getDarkModeSwitchValue(), false)
 
         if (switchDarkMode.isChecked) {
+            switchDarkMode.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+            switchMusicMode.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+            switchDarkMode.setBackgroundResource(R.drawable.oval_white_button)
+            switchMusicMode.setBackgroundResource(R.drawable.oval_white_button)
+
+            gameMode.setTextColor(getColor(R.color.white))
+            radioGroup.setBackgroundResource(R.drawable.oval_white_button)
+            firstCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+            secondCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+            thirdCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+
             toolbar.setBackgroundColor(getColor(R.color.colorPrimaryDarkDarkMode))
             window.statusBarColor = ContextCompat.getColor(
                 this,
                 R.color.colorPrimaryDarkDarkMode
             )
         } else {
+            switchDarkMode.setTextColor(getColor(R.color.colorPrimaryDark))
+            switchMusicMode.setTextColor(getColor(R.color.colorPrimaryDark))
+            switchDarkMode.setBackgroundResource(R.drawable.oval_background)
+            switchMusicMode.setBackgroundResource(R.drawable.oval_background)
+
+            gameMode.setTextColor(getColor(R.color.colorPrimaryDark))
+            radioGroup.setBackgroundResource(R.drawable.oval_background)
+            firstCase.setTextColor(getColor(R.color.colorPrimaryDark))
+            secondCase.setTextColor(getColor(R.color.colorPrimaryDark))
+            thirdCase.setTextColor(getColor(R.color.colorPrimaryDark))
+
             toolbar.setBackgroundColor(getColor(R.color.colorPrimary))
             window.statusBarColor = ContextCompat.getColor(
                 this,
@@ -66,6 +102,17 @@ class SettingsActivity : AppCompatActivity() {
 
         switchDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                switchDarkMode.setTextColor(getColor(R.color.white))
+                switchMusicMode.setTextColor(getColor(R.color.white))
+                switchDarkMode.setBackgroundResource(R.drawable.oval_white_button)
+                switchMusicMode.setBackgroundResource(R.drawable.oval_white_button)
+
+                gameMode.setTextColor(getColor(R.color.white))
+                radioGroup.setBackgroundResource(R.drawable.oval_white_button)
+                firstCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+                secondCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+                thirdCase.setTextColor(getColor(R.color.colorPrimaryDarkDarkMode))
+
                 toolbar.setBackgroundColor(getColor(R.color.colorPrimaryDarkDarkMode))
                 window.statusBarColor =
                     ContextCompat.getColor(
@@ -76,6 +123,17 @@ class SettingsActivity : AppCompatActivity() {
                 editor.putBoolean(getDarkModeSwitchValue(), true)
                 editor.apply()
             } else {
+                switchDarkMode.setTextColor(getColor(R.color.colorPrimaryDark))
+                switchMusicMode.setTextColor(getColor(R.color.colorPrimaryDark))
+                switchDarkMode.setBackgroundResource(R.drawable.oval_background)
+                switchMusicMode.setBackgroundResource(R.drawable.oval_background)
+
+                gameMode.setTextColor(getColor(R.color.colorPrimaryDark))
+                radioGroup.setBackgroundResource(R.drawable.oval_background)
+                firstCase.setTextColor(getColor(R.color.colorPrimaryDark))
+                secondCase.setTextColor(getColor(R.color.colorPrimaryDark))
+                thirdCase.setTextColor(getColor(R.color.colorPrimaryDark))
+
                 window.statusBarColor = ContextCompat.getColor(
                     this,
                     R.color.colorPrimaryDark
@@ -88,26 +146,31 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    fun checkMusic() {
+    private fun checkMusic() {
+        editor = prefs.edit()
+
         val switchAudio = findViewById<SwitchCompat>(R.id.switchMusic)
-        val musicSwitchValue = "MUSIC_MODE"
-        switchAudio.isChecked = prefs.getBoolean(musicSwitchValue, false)
+        switchAudio.isChecked = prefs.getBoolean(getMusicSwitchValue(), true)
 
         if (switchAudio.isChecked) {
             StartActivity.getMediaPlayer().start()
         } else {
-            StartActivity.getMediaPlayer().pause()
+            if (StartActivity.getMediaPlayer().isPlaying) {
+                StartActivity.getMediaPlayer().pause()
+            }
         }
 
         switchAudio.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 StartActivity.getMediaPlayer().start()
-                editor.putBoolean(musicSwitchValue, true)
+                editor.putBoolean(getMusicSwitchValue(), true)
                 editor.apply()
             } else {
-                StartActivity.getMediaPlayer().pause()
-                editor.putBoolean(musicSwitchValue, false)
-                editor.apply()
+                if (StartActivity.getMediaPlayer().isPlaying) {
+                    StartActivity.getMediaPlayer().pause()
+                    editor.putBoolean(getMusicSwitchValue(), false)
+                    editor.apply()
+                }
             }
         }
     }

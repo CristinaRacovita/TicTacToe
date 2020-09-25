@@ -11,4 +11,8 @@
     <string name="computer">Computer:</string>
     <string name="darkMode">Dark Mode</string>
     <string name="music">Audio</string>
+    <string name="firstCase">2 of 3</string>
+    <string name="secondCase">4 of 5</string>
+    <string name="thirdCase">7 of 8</string>
+    <string name="gameMode">Game Mode:</string>
 </resources>
